@@ -3,11 +3,17 @@ SparkSession factory. Single entry point — never build SparkSession elsewhere.
 """
 
 import logging
+import os
+import sys
 
 from delta import configure_spark_with_delta_pip
 from pyspark.sql import SparkSession
 
 from src.security.secrets import get_settings
+
+# Force Spark workers to use the same Python as the driver (avoids version mismatch on WSL)
+os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
+os.environ.setdefault("PYSPARK_DRIVER_PYTHON", sys.executable)
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +54,9 @@ def get_spark(app_name: str = None) -> SparkSession:
         .config("spark.sql.parquet.compression.codec", "snappy")
         .config("spark.sql.parquet.mergeSchema", "false")
         .config("spark.sql.parquet.filterPushdown", "true")
+        # ── Python version consistency (driver and workers must match) ──────
+        .config("spark.pyspark.python", sys.executable)
+        .config("spark.pyspark.driver.python", sys.executable)
         # ── Security: suppress logs that may contain params ──────────────────
         .config("spark.ui.showConsoleProgress", "false")
         .config("spark.eventLog.enabled", "false")
