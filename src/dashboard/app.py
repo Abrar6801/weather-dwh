@@ -4,6 +4,11 @@ Sections: World Map · 7-Day Trends · Country Rankings · Extremes · KPI Cards
 """
 
 import logging
+import sys
+from pathlib import Path
+
+# Ensure repo root is on sys.path so 'src.*' imports work on Streamlit Cloud
+sys.path.insert(0, str(Path(__file__).parents[2]))
 
 import pandas as pd
 import streamlit as st
