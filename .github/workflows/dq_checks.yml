@@ -30,7 +30,8 @@ jobs:
       - name: Run DQ checks on Gold
         run: python -m src.processing.data_quality --layer gold
       - name: Check quarantine volume
-        run: python -c "
+        run: |
+          python -c "
           from src.processing.spark_session import get_spark
           from src.security.secrets import get_settings
           spark = get_spark()
