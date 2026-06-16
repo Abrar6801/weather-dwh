@@ -1,0 +1,30 @@
+{
+  "expectation_suite_name": "bronze_suite",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_to_exist",
+      "kwargs": {"column": "city_id"}
+    },
+    {
+      "expectation_type": "expect_column_to_exist",
+      "kwargs": {"column": "city_name"}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {"column": "city_id"}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {"column": "observed_at_utc"}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {"column": "humidity_pct", "min_value": 0, "max_value": 100}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {"column": "temp_celsius", "min_value": -89.2, "max_value": 56.7}
+    }
+  ],
+  "meta": {"great_expectations_version": "0.18.x"}
+}

@@ -1,0 +1,8 @@
+# Default code owner for all files
+* @YOUR_GITHUB_USERNAME
+
+# Security-critical files require explicit review
+src/security/ @YOUR_GITHUB_USERNAME
+sql/007_rls_policies.sql @YOUR_GITHUB_USERNAME
+sql/008_audit_log.sql @YOUR_GITHUB_USERNAME
+.github/workflows/ @YOUR_GITHUB_USERNAME

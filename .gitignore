@@ -1,0 +1,48 @@
+# ── SECRETS — NEVER COMMIT ──────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+credentials*
+secrets*
+!src/security/secrets.py
+*_secret*
+service_account*.json
+token*.json
+
+# ── Python ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ── Data (never commit raw/processed data) ───────────────────────────
+data/
+*.parquet
+*.delta
+_delta_log/
+
+# ── Spark ─────────────────────────────────────────────────────────────
+spark-warehouse/
+derby.log
+metastore_db/
+
+# ── Watermarks (ephemeral — stored in DB instead) ─────────────────────
+.watermarks/
+
+# ── IDE ───────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+
+# ── OS ────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

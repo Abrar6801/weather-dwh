@@ -1,0 +1,58 @@
+# FIX v3: This workflow was listed in structure but never written in v2.
+name: Daily Data Quality Check
+
+on:
+  schedule:
+    - cron: "30 6 * * *"   # 6:30 AM UTC daily
+  workflow_dispatch:
+
+jobs:
+  dq:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+      - run: pip install -r requirements.txt
+      - name: Run DQ checks on Silver
+        run: python -m src.processing.data_quality --layer silver
+      - name: Run DQ checks on Gold
+        run: python -m src.processing.data_quality --layer gold
+      - name: Check quarantine volume
+        run: python -c "
+          from src.processing.spark_session import get_spark
+          from src.security.secrets import get_settings
+          spark = get_spark()
+          s = get_settings()
+          try:
+              q = spark.read.format('delta').load(s.quarantine_data_path)
+              count = q.count()
+              print(f'Quarantine rows: {count}')
+              if count > 100:
+                  print('WARNING: High quarantine volume')
+                  exit(1)
+          except Exception:
+              print('Quarantine table empty or not yet created')
+          finally:
+              spark.stop()
+          "
+    env:
+      OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      FIELD_ENCRYPTION_KEY: ${{ secrets.FIELD_ENCRYPTION_KEY }}
+      API_KEY_HASH_SALT: ${{ secrets.API_KEY_HASH_SALT }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      SPARK_MASTER: "local[2]"
