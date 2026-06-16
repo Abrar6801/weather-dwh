@@ -4,7 +4,6 @@ Use for any column that must be encrypted at rest (e.g. API keys stored in DB).
 """
 
 import logging
-from typing import Optional
 
 from cryptography.fernet import Fernet, InvalidToken
 
@@ -30,7 +29,7 @@ def encrypt_field(plaintext: str) -> str:
     return f.encrypt(plaintext.encode()).decode()
 
 
-def decrypt_field(ciphertext: str) -> Optional[str]:
+def decrypt_field(ciphertext: str) -> str | None:
     """
     Decrypt a field encrypted by encrypt_field().
     Returns None if the token is invalid (tampering detected).

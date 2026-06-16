@@ -1,7 +1,6 @@
 """Pydantic response models for all API endpoints."""
 
 from datetime import date, datetime
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -10,20 +9,20 @@ class LatestObservationResponse(BaseModel):
     city_id: int
     city_name: str
     country: str
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: float | None = None
+    longitude: float | None = None
     observed_at: datetime
-    temp_celsius: Optional[float] = None
-    feels_like_celsius: Optional[float] = None
-    humidity_pct: Optional[int] = None
-    wind_speed_ms: Optional[float] = None
-    wind_deg: Optional[int] = None
-    cloud_cover_pct: Optional[int] = None
-    visibility_m: Optional[int] = None
-    weather_main: Optional[str] = None
-    weather_description: Optional[str] = None
-    is_daytime: Optional[bool] = None
-    dq_score: Optional[int] = None
+    temp_celsius: float | None = None
+    feels_like_celsius: float | None = None
+    humidity_pct: int | None = None
+    wind_speed_ms: float | None = None
+    wind_deg: int | None = None
+    cloud_cover_pct: int | None = None
+    visibility_m: int | None = None
+    weather_main: str | None = None
+    weather_description: str | None = None
+    is_daytime: bool | None = None
+    dq_score: int | None = None
 
 
 class CityHistoryResponse(BaseModel):
@@ -31,11 +30,11 @@ class CityHistoryResponse(BaseModel):
     city_name: str
     country: str
     observed_at: datetime
-    temp_celsius: Optional[float] = None
-    humidity_pct: Optional[int] = None
-    wind_speed_ms: Optional[float] = None
-    weather_main: Optional[str] = None
-    dq_score: Optional[int] = None
+    temp_celsius: float | None = None
+    humidity_pct: int | None = None
+    wind_speed_ms: float | None = None
+    weather_main: str | None = None
+    dq_score: int | None = None
 
 
 class DailyTrendResponse(BaseModel):
@@ -43,25 +42,25 @@ class DailyTrendResponse(BaseModel):
     city_name: str
     country: str
     obs_date: date
-    avg_temp_celsius: Optional[float] = None
-    min_temp_celsius: Optional[float] = None
-    max_temp_celsius: Optional[float] = None
-    avg_humidity_pct: Optional[float] = None
-    avg_wind_speed_ms: Optional[float] = None
-    dominant_condition: Optional[str] = None
-    prev_day_temp_celsius: Optional[float] = None
-    temp_delta_celsius: Optional[float] = None
+    avg_temp_celsius: float | None = None
+    min_temp_celsius: float | None = None
+    max_temp_celsius: float | None = None
+    avg_humidity_pct: float | None = None
+    avg_wind_speed_ms: float | None = None
+    dominant_condition: str | None = None
+    prev_day_temp_celsius: float | None = None
+    temp_delta_celsius: float | None = None
 
 
 class CountrySnapshotResponse(BaseModel):
     country: str
     city_count: int
-    avg_temp_celsius: Optional[float] = None
-    min_temp_celsius: Optional[float] = None
-    max_temp_celsius: Optional[float] = None
-    avg_humidity_pct: Optional[float] = None
-    avg_wind_ms: Optional[float] = None
-    last_updated_utc: Optional[datetime] = None
+    avg_temp_celsius: float | None = None
+    min_temp_celsius: float | None = None
+    max_temp_celsius: float | None = None
+    avg_humidity_pct: float | None = None
+    avg_wind_ms: float | None = None
+    last_updated_utc: datetime | None = None
 
 
 class ExtremeEventResponse(BaseModel):
@@ -69,23 +68,23 @@ class ExtremeEventResponse(BaseModel):
     city_name: str
     country: str
     observed_at: datetime
-    temp_celsius: Optional[float] = None
-    wind_speed_ms: Optional[float] = None
-    humidity_pct: Optional[int] = None
-    visibility_m: Optional[int] = None
+    temp_celsius: float | None = None
+    wind_speed_ms: float | None = None
+    humidity_pct: int | None = None
+    visibility_m: int | None = None
     event_type: str
 
 
 class RollupResponse(BaseModel):
-    country: Optional[str] = None
-    city_name: Optional[str] = None
-    obs_date: Optional[date] = None
-    avg_temp_celsius: Optional[float] = None
-    min_temp_celsius: Optional[float] = None
-    max_temp_celsius: Optional[float] = None
-    avg_humidity_pct: Optional[float] = None
-    row_count: Optional[int] = None
-    level: Optional[str] = None
+    country: str | None = None
+    city_name: str | None = None
+    obs_date: date | None = None
+    avg_temp_celsius: float | None = None
+    min_temp_celsius: float | None = None
+    max_temp_celsius: float | None = None
+    avg_humidity_pct: float | None = None
+    row_count: int | None = None
+    level: str | None = None
 
 
 class HealthResponse(BaseModel):

@@ -7,7 +7,6 @@ All writes use Delta MERGE or overwrite — no plain Parquet.
 import logging
 from pathlib import Path
 
-from delta.tables import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window

@@ -1,7 +1,6 @@
 """Delta Lake helper utilities for reading and writing Delta tables."""
 
 import logging
-from pathlib import Path
 
 from delta.tables import DeltaTable
 from pyspark.sql import DataFrame, SparkSession

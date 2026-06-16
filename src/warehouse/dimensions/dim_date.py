@@ -10,7 +10,12 @@ from datetime import date, timedelta
 
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.types import (
-    BooleanType, DateType, IntegerType, StringType, StructField, StructType
+    BooleanType,
+    DateType,
+    IntegerType,
+    StringType,
+    StructField,
+    StructType,
 )
 
 logger = logging.getLogger(__name__)

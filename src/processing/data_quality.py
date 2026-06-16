@@ -6,7 +6,6 @@ Runs Great Expectations suites against Silver and Gold Delta tables.
 import argparse
 import logging
 import sys
-from pathlib import Path
 
 from src.processing.spark_session import get_spark
 from src.security.secrets import get_settings

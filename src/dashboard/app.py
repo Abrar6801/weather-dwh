@@ -4,7 +4,6 @@ Sections: World Map · 7-Day Trends · Country Rankings · Extremes · KPI Cards
 """
 
 import logging
-import os
 
 import pandas as pd
 import streamlit as st
@@ -137,7 +136,7 @@ if data_ok:
     if not df_latest.empty:
         city_options = dict(
             zip(df_latest["city_name"] + " (" + df_latest["country"] + ")",
-                df_latest["city_id"])
+                df_latest["city_id"], strict=False)
         )
         selected_city_label = st.selectbox("Select city", options=list(city_options.keys()))
         selected_city_id = city_options[selected_city_label]

@@ -17,19 +17,19 @@ logger = logging.getLogger(__name__)
 
 
 def run() -> None:
-    from src.security.secrets import get_settings
     from src.ingestion.owm_client import OpenWeatherMapClient
     from src.processing.bronze import BronzeProcessor
-    from src.processing.silver import SilverProcessor
     from src.processing.gold import GoldProcessor
+    from src.processing.silver import SilverProcessor
     from src.processing.spark_session import get_spark
-    from src.warehouse.dimensions.dim_date import DimDateBuilder
-    from src.warehouse.dimensions.dim_city import DimCityProcessor
-    from src.warehouse.dimensions.dim_weather import DimWeatherConditionBuilder
-    from src.warehouse.dimensions.dim_time import DimTimeBuilder
-    from src.warehouse.facts.fact_observations import FactObservationsLoader
-    from src.warehouse.facts.fact_daily_weather import FactDailyWeatherLoader
+    from src.security.secrets import get_settings
     from src.storage.postgres import refresh_materialized_views
+    from src.warehouse.dimensions.dim_city import DimCityProcessor
+    from src.warehouse.dimensions.dim_date import DimDateBuilder
+    from src.warehouse.dimensions.dim_time import DimTimeBuilder
+    from src.warehouse.dimensions.dim_weather import DimWeatherConditionBuilder
+    from src.warehouse.facts.fact_daily_weather import FactDailyWeatherLoader
+    from src.warehouse.facts.fact_observations import FactObservationsLoader
 
     settings = get_settings()
     spark = get_spark()

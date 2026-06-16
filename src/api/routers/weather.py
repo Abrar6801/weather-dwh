@@ -6,17 +6,15 @@ GET /city/{id}/history — last 7 days of hourly observations for a city
 """
 
 import logging
-from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from sqlalchemy import text
 
 from src.api.auth import TokenData, get_current_user
 from src.api.schemas import CityHistoryResponse, LatestObservationResponse
-from src.security.secrets import get_settings
 from src.storage.postgres import get_engine
-from sqlalchemy import text
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -47,7 +45,7 @@ def _row_to_latest(row) -> LatestObservationResponse:
 @limiter.limit("60/minute")
 async def get_latest_all(
     request=None,
-    country: Optional[str] = Query(None, description="Filter by 2-letter country code"),
+    country: str | None = Query(None, description="Filter by 2-letter country code"),
     user: TokenData = Depends(get_current_user),
 ) -> list[LatestObservationResponse]:
     """Return the most recent observation for each tracked city."""

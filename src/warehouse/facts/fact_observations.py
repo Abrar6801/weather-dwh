@@ -10,8 +10,14 @@ from delta.tables import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import (
-    BooleanType, DoubleType, IntegerType, LongType,
-    StringType, StructField, StructType, TimestampType,
+    BooleanType,
+    DoubleType,
+    IntegerType,
+    LongType,
+    StringType,
+    StructField,
+    StructType,
+    TimestampType,
 )
 
 from src.processing.spark_session import get_spark

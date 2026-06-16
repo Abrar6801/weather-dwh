@@ -6,11 +6,10 @@ FIX v3: Fully implemented (was missing in v2).
 """
 
 import logging
-from datetime import datetime, timedelta, timezone
-from typing import Optional
+from datetime import UTC, datetime, timedelta
 
 from fastapi import Depends, HTTPException, Security, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, APIKeyHeader
+from fastapi.security import APIKeyHeader, HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel
 
@@ -26,13 +25,13 @@ api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 class TokenData(BaseModel):
     sub: str                  # Subject (username or service name)
     role: str = "viewer"
-    exp: Optional[datetime] = None
+    exp: datetime | None = None
 
 
 def create_access_token(subject: str, role: str = "viewer") -> str:
     """Create a signed JWT access token."""
     settings = get_settings()
-    now = datetime.now(tz=timezone.utc)
+    now = datetime.now(tz=UTC)
     expire = now + timedelta(minutes=settings.jwt_expire_minutes)
     payload = {
         "sub": subject,
@@ -63,7 +62,7 @@ def decode_token(token: str) -> TokenData:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
-        )
+        ) from e
 
 
 def verify_api_key(raw_key: str) -> bool:
@@ -81,8 +80,8 @@ def verify_api_key(raw_key: str) -> bool:
 
 
 async def get_current_user(
-    credentials: Optional[HTTPAuthorizationCredentials] = Security(bearer_scheme),
-    api_key: Optional[str] = Security(api_key_header),
+    credentials: HTTPAuthorizationCredentials | None = Security(bearer_scheme),
+    api_key: str | None = Security(api_key_header),
 ) -> TokenData:
     """
     FastAPI dependency — accepts either JWT Bearer token or X-API-Key header.

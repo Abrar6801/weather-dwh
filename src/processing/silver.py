@@ -5,7 +5,7 @@ Heat index uses full 9-term Rothfusz regression (FIX v3).
 """
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from delta.tables import DeltaTable
@@ -96,7 +96,7 @@ class SilverProcessor:
             )
             .withColumn(
                 "quarantined_at",
-                F.lit(datetime.now(tz=timezone.utc).isoformat()).cast("timestamp"),
+                F.lit(datetime.now(tz=UTC).isoformat()).cast("timestamp"),
             )
         )
 

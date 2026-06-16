@@ -6,9 +6,8 @@ Security: key accessed only via secrets manager, never logged, stripped from sav
 import json
 import logging
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Optional
 
 import requests
 from pydantic import BaseModel, Field, field_validator
@@ -37,7 +36,7 @@ class WeatherCondition(BaseModel):
 class WindData(BaseModel):
     speed: float
     deg: int
-    gust: Optional[float] = None
+    gust: float | None = None
 
 
 class SysData(BaseModel):
@@ -52,7 +51,7 @@ class CurrentWeatherResponse(BaseModel):
     coord: dict
     weather: list[WeatherCondition]
     main: WeatherMain
-    visibility: Optional[int] = None
+    visibility: int | None = None
     wind: WindData
     clouds: dict
     dt: int
@@ -93,15 +92,15 @@ class CurrentWeatherResponse(BaseModel):
             "weather_description": self.weather[0].description,
             "weather_icon": self.weather[0].icon,
             "sunrise_utc": datetime.fromtimestamp(
-                self.sys.sunrise, tz=timezone.utc
+                self.sys.sunrise, tz=UTC
             ).isoformat(),
             "sunset_utc": datetime.fromtimestamp(
-                self.sys.sunset, tz=timezone.utc
+                self.sys.sunset, tz=UTC
             ).isoformat(),
             "observed_at_utc": datetime.fromtimestamp(
-                self.dt, tz=timezone.utc
+                self.dt, tz=UTC
             ).isoformat(),
-            "ingested_at_utc": datetime.now(tz=timezone.utc).isoformat(),
+            "ingested_at_utc": datetime.now(tz=UTC).isoformat(),
             "timezone_offset_sec": self.timezone,
         }
 
@@ -149,7 +148,7 @@ class OpenWeatherMapClient:
 
     def _save_raw(self, data: dict, prefix: str) -> Path:
         """Persist JSON with sensitive params stripped."""
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         folder = self.raw_path / prefix / now.strftime("%Y/%m/%d")
         folder.mkdir(parents=True, exist_ok=True)
         filename = f"{prefix}_{now.strftime('%Y%m%d_%H%M%S_%f')}.json"

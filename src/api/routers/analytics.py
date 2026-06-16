@@ -10,11 +10,11 @@ import logging
 from fastapi import APIRouter, Depends, Query
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from sqlalchemy import text
 
 from src.api.auth import TokenData, get_current_user
 from src.api.schemas import CountrySnapshotResponse, DailyTrendResponse, ExtremeEventResponse
 from src.storage.postgres import get_engine
-from sqlalchemy import text
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

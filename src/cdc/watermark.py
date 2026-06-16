@@ -5,8 +5,7 @@ Now stored in a pipeline_watermarks table in PostgreSQL — survives between run
 """
 
 import logging
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
 
 from sqlalchemy import text
 
@@ -40,7 +39,7 @@ class WatermarkManager:
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS pipeline"))
             conn.execute(text(CREATE_TABLE_SQL))
 
-    def get_last_watermark(self) -> Optional[str]:
+    def get_last_watermark(self) -> str | None:
         """Return ISO timestamp string of last processed record, or None."""
         engine = get_engine()
         with engine.connect() as conn:
@@ -56,7 +55,7 @@ class WatermarkManager:
 
     def update_watermark(self, timestamp: str = None) -> None:
         """Upsert the watermark for this layer."""
-        ts = timestamp or datetime.now(tz=timezone.utc).isoformat()
+        ts = timestamp or datetime.now(tz=UTC).isoformat()
         engine = get_engine()
         with engine.begin() as conn:
             conn.execute(

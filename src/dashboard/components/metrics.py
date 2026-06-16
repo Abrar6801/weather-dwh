@@ -13,11 +13,10 @@ def global_kpi_row(df_latest) -> None:
     Render a row of 4 KPI cards from the latest observations DataFrame.
     Expected columns: temp_celsius, humidity_pct, wind_speed_ms, dq_score
     """
-    import pandas as pd
     cols = st.columns(4)
 
     if df_latest is None or df_latest.empty:
-        for col, label in zip(cols, ["Avg Temp", "Avg Humidity", "Avg Wind", "Avg DQ Score"]):
+        for col, label in zip(cols, ["Avg Temp", "Avg Humidity", "Avg Wind", "Avg DQ Score"], strict=False):
             with col:
                 kpi_card(label, "N/A")
         return

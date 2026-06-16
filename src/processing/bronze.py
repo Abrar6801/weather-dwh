@@ -8,7 +8,7 @@ FIX v3: pipeline_run_id and bronze_loaded_at stored as correct types.
 
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from delta.tables import DeltaTable
@@ -73,7 +73,7 @@ class BronzeProcessor:
     def _records_to_df(self, records: list[dict]) -> DataFrame:
         """Convert flat dicts to DataFrame with metadata columns."""
         run_id = str(uuid.uuid4())
-        now = datetime.now(tz=timezone.utc).isoformat()
+        now = datetime.now(tz=UTC).isoformat()
         enriched = [
             {**r, "pipeline_run_id": run_id, "bronze_loaded_at": now}
             for r in records

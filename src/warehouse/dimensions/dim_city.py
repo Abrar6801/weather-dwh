@@ -5,14 +5,20 @@ No data is brought to the driver for the change detection step.
 """
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from delta.tables import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import (
-    BooleanType, DoubleType, IntegerType, LongType,
-    StringType, StructField, StructType, TimestampType,
+    BooleanType,
+    DoubleType,
+    IntegerType,
+    LongType,
+    StringType,
+    StructField,
+    StructType,
+    TimestampType,
 )
 
 from src.processing.spark_session import get_spark
@@ -65,7 +71,7 @@ class DimCityProcessor:
         self.dim_path = settings.warehouse_data_path + "/dim_city"
 
     def _now_ts(self) -> str:
-        return datetime.now(tz=timezone.utc).isoformat()
+        return datetime.now(tz=UTC).isoformat()
 
     def _prepare_incoming(self, source_df: DataFrame) -> DataFrame:
         """Add hash and select only the columns we track."""
